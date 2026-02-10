@@ -107,9 +107,36 @@ const InquiryForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    navigate('/booking', { state: formData });
+
+    try {
+      const nameParts = formData.fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      const response = await fetch('/.netlify/functions/create-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email: formData.email,
+          phone: formData.phone,
+          businessName: formData.businessName,
+          leadSource: formData.leadSource,
+          services: formData.services,
+          ghlStatus: formData.ghlStatus,
+          projectType: formData.projectType,
+          timeline: formData.timeline,
+          description: formData.description,
+        }),
+      });
+
+      const data = await response.json();
+      navigate('/booking', { state: { ...formData, contactId: data.contactId } });
+    } catch (err) {
+      console.error('Failed to create contact:', err);
+      navigate('/booking', { state: formData });
+    }
   };
 
   const servicesList = [

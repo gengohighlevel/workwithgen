@@ -13,12 +13,15 @@ interface CalendarSlots {
 }
 
 const CALENDAR_ID = "6fQ7GJMol3Wcl8o7DSHX";
-const GHL_API_KEY = process.env.GHL_API_KEY || ""; 
+const GHL_API_KEY = process.env.GHL_API_KEY || "";
+const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || "";
 
 const BookingPage: React.FC = () => {
   const { state } = useLocation();
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const { theme } = useTheme();
+
+  const contactId = state?.contactId || '';
 
   // Booking details from previous step or manual entry
   const [userDetails, setUserDetails] = useState({
@@ -60,31 +63,33 @@ const BookingPage: React.FC = () => {
     const endDate = endOfMonth.getTime();
 
     try {
-      const url = `https://rest.gohighlevel.com/v1/appointments/slots?calendarId=${CALENDAR_ID}&startDate=${startDate}&endDate=${endDate}&timezone=${userTimezone}`;
-      
+      const startDateISO = startOfMonth.toISOString();
+      const endDateISO = endOfMonth.toISOString();
+      const url = `https://services.leadconnectorhq.com/calendars/${CALENDAR_ID}/free-slots?startDate=${encodeURIComponent(startDateISO)}&endDate=${encodeURIComponent(endDateISO)}&timezone=${encodeURIComponent(userTimezone)}`;
+
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Version': '2021-04-15'
         }
       });
 
       if (!response.ok) {
-         console.warn("API Call failed. Using mock data for demonstration.");
          throw new Error('Failed to fetch slots');
       }
 
       const data = await response.json();
-      
+
+      // v2 returns { [date: string]: { slots: { slot: string }[] } }
       const slotMap: CalendarSlots = {};
-      const datesArray = data.dates || data.data || [];
-      
-      if (Array.isArray(datesArray)) {
-        datesArray.forEach((d: any) => {
-          if (d.date && d.slots) {
-            slotMap[d.date] = d.slots;
-          }
-        });
+      const slotsData = data || {};
+
+      for (const [dateKey, dateValue] of Object.entries(slotsData)) {
+        const dateObj = dateValue as { slots?: { slot: string }[] };
+        if (dateObj.slots && Array.isArray(dateObj.slots)) {
+          slotMap[dateKey] = dateObj.slots.map((s: { slot: string }) => s.slot);
+        }
       }
 
       setAvailableSlots(slotMap);
@@ -102,39 +107,46 @@ const BookingPage: React.FC = () => {
     setBookingLoading(true);
     
     try {
-      const url = `https://rest.gohighlevel.com/v1/appointments/`;
-      const body = {
+      const slotDate = new Date(selectedSlot);
+      const endTime = new Date(slotDate.getTime() + 30 * 60 * 1000).toISOString();
+
+      const url = `https://services.leadconnectorhq.com/calendars/events/appointments`;
+      const body: Record<string, unknown> = {
         calendarId: CALENDAR_ID,
-        selectedTimezone: userTimezone,
-        selectedSlot: selectedSlot,
-        email: userDetails.email,
-        phone: userDetails.phone,
-        firstName: userDetails.fullName.split(' ')[0] || 'Client',
-        lastName: userDetails.fullName.split(' ').slice(1).join(' ') || '',
+        locationId: GHL_LOCATION_ID,
+        startTime: selectedSlot,
+        endTime,
         title: `Discovery Call with ${userDetails.fullName}`,
-        appointmentStatus: 'confirmed'
+        appointmentStatus: 'confirmed',
+        ...(contactId ? { contactId } : {
+          email: userDetails.email,
+          phone: userDetails.phone,
+          firstName: userDetails.fullName.split(' ')[0] || 'Client',
+          lastName: userDetails.fullName.split(' ').slice(1).join(' ') || '',
+        }),
       };
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Version': '2021-04-15'
         },
         body: JSON.stringify(body)
       });
 
-      if (response.ok || true) { // Allow true for demo purposes if API key is restricted
+      if (response.ok) {
         setBookingConfirmed(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        throw new Error('Booking failed');
+        const errData = await response.text();
+        console.error('Booking failed:', errData);
+        setError('Booking failed. Please try again.');
       }
     } catch (err) {
       console.error(err);
-      // For demo resilience, we still confirm
-      setBookingConfirmed(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setError('Booking failed. Please try again.');
     } finally {
       setBookingLoading(false);
     }
