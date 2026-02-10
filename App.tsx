@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import FormSubmitPage from './pages/FormSubmitPage';
-import AppointmentPage from './pages/AppointmentPage';
+import BookingPage from './pages/BookingPage';
 import CustomCursor from './components/CustomCursor';
 import GenerativeNetwork from './components/GenerativeNetwork';
 import { ThemeProvider } from './context/ThemeContext';
@@ -63,8 +63,8 @@ const App: React.FC = () => {
           <main className="flex-grow pt-12">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/book" element={<FormSubmitPage />} />
-              <Route path="/thank-you" element={<AppointmentPage />} />
+              <Route path="/submit" element={<FormSubmitPage />} />
+              <Route path="/booking" element={<BookingPage />} />
             </Routes>
           </main>
           <Footer />

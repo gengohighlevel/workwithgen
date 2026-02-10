@@ -6,7 +6,8 @@ import { useTheme } from '../context/ThemeContext';
 const Navbar: React.FC = () => {
   const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const isSpecialPage = pathname === '/book' || pathname === '/thank-you';
+  // isSpecialPage covers both the form page (/submit) and the booking/calendar page (/booking)
+  const isSpecialPage = pathname === '/submit' || pathname === '/booking';
 
   return (
     <nav className="fixed top-0 w-full z-50 apple-blur border-b border-gray-100 dark:border-white/10 h-14 flex items-center transition-colors duration-300">
@@ -54,7 +55,7 @@ const Navbar: React.FC = () => {
 
           {!isSpecialPage && (
             <Link 
-              to="/book" 
+              to="/submit" 
               className="group relative flex items-center bg-[#937BF0]/15 hover:bg-[#937BF0] text-[#1d1d1f] dark:text-white hover:text-white pl-10 pr-4 hover:pl-4 hover:pr-10 py-1.5 rounded-full text-[13px] font-medium transition-all duration-500 overflow-hidden"
             >
               <div className="absolute left-1.5 group-hover:left-[calc(100%-2.125rem)] w-7 h-7 bg-[#937BF0] group-hover:bg-white rounded-full flex items-center justify-center transition-all duration-500 z-10">

@@ -439,7 +439,7 @@ const LandingPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center gap-5 justify-center lg:justify-start">
                 <Magnetic>
                   <Link 
-                    to="/book" 
+                    to="/submit" 
                     className="purple-gradient text-white px-10 py-4 rounded-full text-lg font-bold hover:scale-[1.02] transition-all shadow-xl shadow-purple-500/10 active:scale-95 inline-block"
                   >
                     Book Discovery Call
@@ -808,7 +808,7 @@ const LandingPage: React.FC = () => {
           <Reveal animation="animate-reveal-up" delay="animation-delay-600">
             <Magnetic>
               <Link 
-                to="/book" 
+                to="/submit" 
                 className="inline-flex items-center gap-3 bg-[#0a0a0b] dark:bg-white dark:text-black text-white px-10 py-5 rounded-full text-lg font-bold hover:scale-[1.05] transition-all hover:bg-black dark:hover:bg-gray-200 active:scale-95 shadow-2xl shadow-black/20"
               >
                 Book Discovery Call <ArrowRight className="w-5 h-5" />
@@ -834,7 +834,7 @@ const LandingPage: React.FC = () => {
               </p>
               <div className="flex flex-col items-center gap-4">
                  <Magnetic>
-                   <Link to="/book" className="bg-[#0a0a0b] dark:bg-white dark:text-black text-white px-10 py-5 rounded-full text-lg font-bold flex items-center gap-3 hover:scale-[1.05] transition-transform shadow-2xl shadow-black/10 active:scale-95 inline-block">
+                   <Link to="/submit" className="bg-[#0a0a0b] dark:bg-white dark:text-black text-white px-10 py-5 rounded-full text-lg font-bold flex items-center gap-3 hover:scale-[1.05] transition-transform shadow-2xl shadow-black/10 active:scale-95 inline-block">
                      <Calendar className="w-6 h-6 text-purple-500" />
                      Book Discovery Call
                    </Link>

@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Instagram, Linkedin, Facebook, Twitter } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { pathname } = useLocation();
-  const isSpecialPage = pathname === '/book' || pathname === '/thank-you';
+  const isSpecialPage = pathname === '/submit' || pathname === '/booking';
 
   return (
     <footer className="bg-[#f5f5f7] dark:bg-zinc-950 pt-20 pb-12 px-6 border-t border-gray-200 dark:border-zinc-800 transition-colors duration-300">
@@ -61,7 +60,7 @@ const Footer: React.FC = () => {
                  <li><Link to="/#projects" className="hover:text-black dark:hover:text-white transition-colors">Projects</Link></li>
                  <li><Link to="/#features" className="hover:text-black dark:hover:text-white transition-colors">Features</Link></li>
                  <li><Link to="/#contact" className="hover:text-black dark:hover:text-white transition-colors">Contact</Link></li>
-                 <li><Link to="/book" className="hover:text-black dark:hover:text-white transition-colors text-purple-600 dark:text-purple-400 font-bold">Book a Call</Link></li>
+                 <li><Link to="/submit" className="hover:text-black dark:hover:text-white transition-colors text-purple-600 dark:text-purple-400 font-bold">Book a Call</Link></li>
               </ul>
             </div>
           )}
