@@ -13,7 +13,8 @@ interface CalendarSlots {
 }
 
 const CALENDAR_ID = "6fQ7GJMol3Wcl8o7DSHX";
-const GHL_API_KEY = process.env.GHL_API_KEY || ""; 
+const GHL_API_KEY = process.env.GHL_API_KEY || "";
+const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || ""; 
 
 const AppointmentPage: React.FC = () => {
   const { state } = useLocation();
@@ -21,6 +22,7 @@ const AppointmentPage: React.FC = () => {
   const { theme } = useTheme();
 
   // Booking details from previous step or manual entry
+  const contactId = state?.contactId || '';
   const [userDetails, setUserDetails] = useState({
     fullName: state?.fullName || '',
     email: state?.email || '',
@@ -60,37 +62,30 @@ const AppointmentPage: React.FC = () => {
     const endDate = endOfMonth.getTime();
 
     try {
-      const url = `https://rest.gohighlevel.com/v1/appointments/slots?calendarId=${CALENDAR_ID}&startDate=${startDate}&endDate=${endDate}&timezone=${userTimezone}`;
-      
+      const url = `https://services.leadconnectorhq.com/calendars/${CALENDAR_ID}/free-slots?startDate=${startDate}&endDate=${endDate}&timezone=${userTimezone}`;
+
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Accept': 'application/json',
+          'Version': '2021-04-15'
         }
       });
 
       if (!response.ok) {
-         // Fallback for demo or if API key is missing/invalid in this context
-         console.warn("API Call failed, possibly due to CORS or missing key. Showing mock data for demonstration if needed.");
-         // In a real scenario, handle error properly. For this specific prompt, if it fails, I'll allow the UI to remain empty or show error.
-         // However, to satisfy the user request "My code will get the availability...", I must assume the key works.
          throw new Error('Failed to fetch slots');
       }
 
       const data = await response.json();
-      
-      // Transform API response to map: { "YYYY-MM-DD": ["ISOString", ...] }
+
+      // V2 returns an availability map keyed by YYYY-MM-DD: { "2024-01-15": { slots: [...] }, ... }
       const slotMap: CalendarSlots = {};
-      
-      // Handle response structure variations (sometimes top level dates, sometimes data.dates)
-      const datesArray = data.dates || data.data || [];
-      
-      if (Array.isArray(datesArray)) {
-        datesArray.forEach((d: any) => {
-          if (d.date && d.slots) {
-            slotMap[d.date] = d.slots;
-          }
-        });
+
+      for (const [dateKey, dateValue] of Object.entries(data)) {
+        const entry = dateValue as { slots?: string[] };
+        if (entry.slots && entry.slots.length > 0) {
+          slotMap[dateKey] = entry.slots;
+        }
       }
 
       setAvailableSlots(slotMap);
@@ -104,31 +99,31 @@ const AppointmentPage: React.FC = () => {
   };
 
   const handleBooking = async () => {
-    if (!selectedSlot || !userDetails.email) return;
-    
-    setBookingLoading(true);
-    
-    try {
-      const url = `https://rest.gohighlevel.com/v1/appointments/`;
-      const body = {
-        calendarId: CALENDAR_ID,
-        selectedTimezone: userTimezone,
-        selectedSlot: selectedSlot,
-        email: userDetails.email,
-        phone: userDetails.phone,
-        firstName: userDetails.fullName.split(' ')[0] || 'Client',
-        lastName: userDetails.fullName.split(' ').slice(1).join(' ') || '',
-        title: `Discovery Call with ${userDetails.fullName}`,
-        appointmentStatus: 'confirmed'
-      };
+    if (!selectedSlot || !contactId) return;
 
-      const response = await fetch(url, {
+    setBookingLoading(true);
+
+    try {
+      const startTime = selectedSlot;
+      const endTime = new Date(new Date(selectedSlot).getTime() + 30 * 60 * 1000).toISOString();
+
+      const response = await fetch('https://services.leadconnectorhq.com/calendars/events/appointments', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Version': '2021-04-15'
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({
+          calendarId: CALENDAR_ID,
+          locationId: GHL_LOCATION_ID,
+          contactId,
+          startTime,
+          endTime,
+          title: `Discovery Call with ${userDetails.fullName}`,
+          appointmentStatus: 'confirmed',
+        })
       });
 
       if (response.ok) {
@@ -425,10 +420,10 @@ const AppointmentPage: React.FC = () => {
                  <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
                    <button
                      onClick={handleBooking}
-                     disabled={!selectedSlot || !userDetails.email || bookingLoading}
+                     disabled={!selectedSlot || !contactId || bookingLoading}
                      className={`
                        w-full py-4 rounded-full font-bold text-base transition-all duration-300 flex items-center justify-center gap-2
-                       ${selectedSlot && userDetails.email
+                       ${selectedSlot && contactId
                          ? 'bg-[#937BF0] hover:bg-[#7D65D6] text-white shadow-lg hover:shadow-xl hover:-translate-y-1' 
                          : 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 cursor-not-allowed'
                        }

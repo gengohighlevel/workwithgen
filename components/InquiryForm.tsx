@@ -131,6 +131,10 @@ const InquiryForm: React.FC = () => {
       if (!res.ok) {
         const err = await res.json();
         console.error('Contact creation failed:', err);
+      } else {
+        const data = await res.json();
+        navigate('/thank-you', { state: { ...formData, contactId: data.contactId } });
+        return;
       }
     } catch (err) {
       console.error('Contact creation error:', err);
