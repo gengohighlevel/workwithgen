@@ -35,6 +35,28 @@ const handler: Handler = async (event) => {
     };
   }
 
+  // Compute endTime from startTime preserving the timezone offset
+  // startTime format: "2026-02-11T11:00:00+08:00"
+  const startTimeStr = body.startTime as string;
+  let endTime = body.endTime as string | undefined;
+
+  if (!endTime) {
+    // Extract timezone offset from startTime (e.g. "+08:00" or "-05:00")
+    const tzMatch = startTimeStr.match(/([+-]\d{2}:\d{2})$/);
+    const offsetStr = tzMatch ? tzMatch[1] : "+00:00";
+    const sign = offsetStr[0] === "+" ? 1 : -1;
+    const [offH, offM] = offsetStr.slice(1).split(":").map(Number);
+    const offsetMs = sign * (offH * 60 + offM) * 60000;
+
+    const startDate = new Date(startTimeStr);
+    const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
+
+    // Shift UTC to the slot's local timezone for formatting
+    const localEnd = new Date(endDate.getTime() + offsetMs + endDate.getTimezoneOffset() * 60000);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    endTime = `${localEnd.getUTCFullYear()}-${pad(localEnd.getUTCMonth() + 1)}-${pad(localEnd.getUTCDate())}T${pad(localEnd.getUTCHours())}:${pad(localEnd.getUTCMinutes())}:${pad(localEnd.getUTCSeconds())}${offsetStr}`;
+  }
+
   try {
     const response = await fetch(
       "https://services.leadconnectorhq.com/calendars/events/appointments",
@@ -48,6 +70,7 @@ const handler: Handler = async (event) => {
         },
         body: JSON.stringify({
           ...body,
+          endTime,
           locationId,
         }),
       }

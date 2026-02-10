@@ -100,14 +100,10 @@ const BookingPage: React.FC = () => {
     setBookingLoading(true);
     
     try {
-      const slotDate = new Date(selectedSlot);
-      const endTime = new Date(slotDate.getTime() + 30 * 60 * 1000).toISOString();
-
       const body: Record<string, unknown> = {
         calendarId: CALENDAR_ID,
         contactId,
         startTime: selectedSlot,
-        endTime,
         title: `Discovery Call with ${userDetails.fullName}`,
         appointmentStatus: 'confirmed',
       };
