@@ -82,6 +82,20 @@ const handler: Handler = async (event) => {
 
     if (!response.ok) {
       const errorData = await response.text();
+
+      // GHL rejects duplicate contacts but provides the existing contactId
+      try {
+        const parsed = JSON.parse(errorData);
+        if (parsed.meta?.contactId) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify({ success: true, contactId: parsed.meta.contactId }),
+          };
+        }
+      } catch {
+        // not JSON, fall through
+      }
+
       return {
         statusCode: response.status,
         body: JSON.stringify({ success: false, error: errorData }),
