@@ -1,0 +1,8 @@
+{
+  "name": "Work with Gen - Elite GHL Automation",
+  "description": "An Apple-inspired landing page for a GoHighLevel automation expert, featuring high-end aesthetics, a multi-step booking funnel, and real-time data visualization.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
