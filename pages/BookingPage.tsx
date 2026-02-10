@@ -71,14 +71,17 @@ const BookingPage: React.FC = () => {
 
       const data = await response.json();
 
-      // v2 returns { [date: string]: { slots: { slot: string }[] } }
+      // v2 returns { [date: string]: { slots: [...] } }
+      // slots can be strings or { slot: string } objects
       const slotMap: CalendarSlots = {};
       const slotsData = data || {};
 
       for (const [dateKey, dateValue] of Object.entries(slotsData)) {
-        const dateObj = dateValue as { slots?: { slot: string }[] };
+        const dateObj = dateValue as { slots?: unknown[] };
         if (dateObj.slots && Array.isArray(dateObj.slots)) {
-          slotMap[dateKey] = dateObj.slots.map((s: { slot: string }) => s.slot);
+          slotMap[dateKey] = dateObj.slots.map((s: unknown) =>
+            typeof s === 'string' ? s : (s as { slot: string }).slot
+          );
         }
       }
 
@@ -163,8 +166,10 @@ const BookingPage: React.FC = () => {
      return availableSlots[localDateStr] || [];
   };
 
-  const formatTime = (isoString: string) => {
-    const date = new Date(isoString);
+  const formatTime = (slot: string) => {
+    // Handle epoch ms (numeric string) or ISO string
+    const date = /^\d+$/.test(slot) ? new Date(Number(slot)) : new Date(slot);
+    if (isNaN(date.getTime())) return slot;
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
