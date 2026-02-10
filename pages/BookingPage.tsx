@@ -13,8 +13,6 @@ interface CalendarSlots {
 }
 
 const CALENDAR_ID = "6fQ7GJMol3Wcl8o7DSHX";
-const GHL_API_KEY = process.env.GHL_API_KEY || "";
-const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || "";
 
 const BookingPage: React.FC = () => {
   const { state } = useLocation();
@@ -65,15 +63,9 @@ const BookingPage: React.FC = () => {
     try {
       const startDateISO = startOfMonth.toISOString();
       const endDateISO = endOfMonth.toISOString();
-      const url = `https://services.leadconnectorhq.com/calendars/${CALENDAR_ID}/free-slots?startDate=${encodeURIComponent(startDateISO)}&endDate=${encodeURIComponent(endDateISO)}&timezone=${encodeURIComponent(userTimezone)}`;
+      const url = `/.netlify/functions/get-free-slots?calendarId=${CALENDAR_ID}&startDate=${encodeURIComponent(startDateISO)}&endDate=${encodeURIComponent(endDateISO)}&timezone=${encodeURIComponent(userTimezone)}`;
 
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json',
-          'Version': '2021-04-15'
-        }
-      });
+      const response = await fetch(url);
 
       if (!response.ok) {
          throw new Error('Failed to fetch slots');
@@ -110,10 +102,8 @@ const BookingPage: React.FC = () => {
       const slotDate = new Date(selectedSlot);
       const endTime = new Date(slotDate.getTime() + 30 * 60 * 1000).toISOString();
 
-      const url = `https://services.leadconnectorhq.com/calendars/events/appointments`;
       const body: Record<string, unknown> = {
         calendarId: CALENDAR_ID,
-        locationId: GHL_LOCATION_ID,
         startTime: selectedSlot,
         endTime,
         title: `Discovery Call with ${userDetails.fullName}`,
@@ -126,13 +116,9 @@ const BookingPage: React.FC = () => {
         }),
       };
 
-      const response = await fetch(url, {
+      const response = await fetch('/.netlify/functions/create-appointment', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GHL_API_KEY}`,
-          'Content-Type': 'application/json',
-          'Version': '2021-04-15'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
 
