@@ -24,7 +24,7 @@ const Reveal: React.FC<{ children: React.ReactNode; animation: string; delay?: s
   );
 };
 
-const BookingPage: React.FC = () => {
+const FormSubmitPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-black pt-24 pb-32 px-6 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
@@ -116,4 +116,4 @@ const BookingPage: React.FC = () => {
   );
 };
 
-export default BookingPage;
+export default FormSubmitPage;

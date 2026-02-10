@@ -15,7 +15,7 @@ interface CalendarSlots {
 const CALENDAR_ID = "6fQ7GJMol3Wcl8o7DSHX";
 const GHL_API_KEY = process.env.GHL_API_KEY || ""; 
 
-const ThankYouPage: React.FC = () => {
+const AppointmentPage: React.FC = () => {
   const { state } = useLocation();
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const { theme } = useTheme();
@@ -459,4 +459,4 @@ const ThankYouPage: React.FC = () => {
   );
 };
 
-export default ThankYouPage;
+export default AppointmentPage;

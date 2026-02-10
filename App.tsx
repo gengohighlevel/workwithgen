@@ -3,8 +3,8 @@ import { HashRouter as Router, Routes, Route, useLocation, useNavigate } from 'r
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
-import BookingPage from './pages/BookingPage';
-import ThankYouPage from './pages/ThankYouPage';
+import FormSubmitPage from './pages/FormSubmitPage';
+import AppointmentPage from './pages/AppointmentPage';
 import CustomCursor from './components/CustomCursor';
 import GenerativeNetwork from './components/GenerativeNetwork';
 import { ThemeProvider } from './context/ThemeContext';
@@ -63,8 +63,8 @@ const App: React.FC = () => {
           <main className="flex-grow pt-12">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/book" element={<BookingPage />} />
-              <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="/book" element={<FormSubmitPage />} />
+              <Route path="/thank-you" element={<AppointmentPage />} />
             </Routes>
           </main>
           <Footer />
