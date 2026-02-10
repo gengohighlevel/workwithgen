@@ -26,6 +26,12 @@ const handler: Handler = async (event) => {
     email?: string;
     phone?: string;
     businessName?: string;
+    leadSource?: string;
+    services?: string[];
+    ghlStatus?: string;
+    projectType?: string;
+    timeline?: string;
+    description?: string;
   };
 
   try {
@@ -50,15 +56,27 @@ const handler: Handler = async (event) => {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        Accept: "application/json",
         Version: "2021-07-28",
       },
       body: JSON.stringify({
         firstName: body.firstName || "",
         lastName: body.lastName || "",
+        name: [body.firstName, body.lastName].filter(Boolean).join(" "),
         email: body.email,
         phone: body.phone || "",
         companyName: body.businessName || "",
         locationId,
+        source: "website form",
+        customFields: [
+          { id: "crkMxg5CdJqBfizIWiwr", value: body.businessName || "" },
+          { id: "rkFsKxzDjlAmITs3H23E", value: body.leadSource || "" },
+          { id: "y9Lyv8PhmusMEFhZHsEr", value: (body.services || []).join(", ") },
+          { id: "yFLW0YKN2Qr9htx5oJ5d", value: body.ghlStatus || "" },
+          { id: "5eg1MnLggnCrgH9eDQe0", value: body.projectType || "" },
+          { id: "d9EEIcFiJ1YdG7bUK6Qm", value: body.timeline || "" },
+          { id: "sdBj2f1FCLqJAraea06O", value: body.description || "" },
+        ],
       }),
     });
 
@@ -73,7 +91,7 @@ const handler: Handler = async (event) => {
     const data = await response.json();
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify({ success: true, contactId: data.contact?.id }),
     };
   } catch (err: unknown) {
