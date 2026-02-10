@@ -61,9 +61,7 @@ const BookingPage: React.FC = () => {
     const endDate = endOfMonth.getTime();
 
     try {
-      const startDateISO = startOfMonth.toISOString();
-      const endDateISO = endOfMonth.toISOString();
-      const url = `/.netlify/functions/get-free-slots?calendarId=${CALENDAR_ID}&startDate=${encodeURIComponent(startDateISO)}&endDate=${encodeURIComponent(endDateISO)}&timezone=${encodeURIComponent(userTimezone)}`;
+      const url = `/.netlify/functions/get-free-slots?calendarId=${CALENDAR_ID}&startDate=${startDate}&endDate=${endDate}&timezone=${encodeURIComponent(userTimezone)}`;
 
       const response = await fetch(url);
 
@@ -94,7 +92,7 @@ const BookingPage: React.FC = () => {
   };
 
   const handleBooking = async () => {
-    if (!selectedSlot || !userDetails.email) return;
+    if (!selectedSlot || !contactId) return;
     
     setBookingLoading(true);
     
@@ -104,16 +102,11 @@ const BookingPage: React.FC = () => {
 
       const body: Record<string, unknown> = {
         calendarId: CALENDAR_ID,
+        contactId,
         startTime: selectedSlot,
         endTime,
         title: `Discovery Call with ${userDetails.fullName}`,
         appointmentStatus: 'confirmed',
-        ...(contactId ? { contactId } : {
-          email: userDetails.email,
-          phone: userDetails.phone,
-          firstName: userDetails.fullName.split(' ')[0] || 'Client',
-          lastName: userDetails.fullName.split(' ').slice(1).join(' ') || '',
-        }),
       };
 
       const response = await fetch('/.netlify/functions/create-appointment', {
@@ -418,10 +411,10 @@ const BookingPage: React.FC = () => {
                  <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
                    <button
                      onClick={handleBooking}
-                     disabled={!selectedSlot || !userDetails.email || bookingLoading}
+                     disabled={!selectedSlot || !contactId || bookingLoading}
                      className={`
                        w-full py-4 rounded-full font-bold text-base transition-all duration-300 flex items-center justify-center gap-2
-                       ${selectedSlot && userDetails.email
+                       ${selectedSlot && contactId
                          ? 'bg-[#937BF0] hover:bg-[#7D65D6] text-white shadow-lg hover:shadow-xl hover:-translate-y-1' 
                          : 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-600 cursor-not-allowed'
                        }
