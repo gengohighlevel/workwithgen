@@ -2,10 +2,21 @@ import type { Handler } from "@netlify/functions";
 
 const GHL_API_URL = "https://services.leadconnectorhq.com/contacts/";
 
+const headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 const handler: Handler = async (event) => {
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 204, headers, body: "" };
+  }
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers,
       body: JSON.stringify({ success: false, error: "Method not allowed" }),
     };
   }
@@ -16,6 +27,7 @@ const handler: Handler = async (event) => {
   if (!apiKey || !locationId) {
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({ success: false, error: "Server configuration error" }),
     };
   }
@@ -39,6 +51,7 @@ const handler: Handler = async (event) => {
   } catch {
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({ success: false, error: "Invalid JSON body" }),
     };
   }
@@ -46,6 +59,7 @@ const handler: Handler = async (event) => {
   if (!body.email) {
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({ success: false, error: "Email is required" }),
     };
   }
@@ -87,6 +101,7 @@ const handler: Handler = async (event) => {
         if (parsed.meta?.contactId) {
           return {
             statusCode: 200,
+            headers,
             body: JSON.stringify({ success: true, contactId: parsed.meta.contactId }),
           };
         }
@@ -95,6 +110,7 @@ const handler: Handler = async (event) => {
       }
       return {
         statusCode: response.status,
+        headers,
         body: JSON.stringify({ success: false, error: errorData }),
       };
     }
@@ -102,12 +118,14 @@ const handler: Handler = async (event) => {
     const data = await response.json();
     return {
       statusCode: 201,
+      headers,
       body: JSON.stringify({ success: true, contactId: data.contact?.id }),
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({ success: false, error: message }),
     };
   }

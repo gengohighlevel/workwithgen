@@ -2,3 +2,9 @@
   command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
+
+# SPA fallback — must come AFTER Netlify functions (which always take priority)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
