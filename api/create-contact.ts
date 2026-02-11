@@ -33,6 +33,15 @@ function ghlHeaders(apiKey: string) {
   };
 }
 
+// Search for an existing contact by email to avoid GHL's phone-based duplicate matching
+async function findContactByEmail(apiKey: string, locationId: string, email: string): Promise<string | null> {
+  const url = `${GHL_API_URL}search/duplicate?locationId=${locationId}&email=${encodeURIComponent(email)}`;
+  const res = await fetch(url, { headers: ghlHeaders(apiKey) });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.contact?.id || null;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -61,6 +70,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const payload = buildContactPayload(body, locationId);
 
   try {
+    // Step 1: Check if a contact with this exact email already exists
+    const existingId = await findContactByEmail(apiKey, locationId, body.email as string);
+
+    if (existingId) {
+      // Update the existing contact with the latest form data
+      await fetch(`${GHL_API_URL}${existingId}`, {
+        method: "PUT",
+        headers: ghlHeaders(apiKey),
+        body: JSON.stringify(payload),
+      });
+      return res.status(200).json({ success: true, contactId: existingId });
+    }
+
+    // Step 2: No existing contact with this email — create new
     const response = await fetch(GHL_API_URL, {
       method: "POST",
       headers: ghlHeaders(apiKey),
@@ -69,21 +92,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       const errorData = await response.text();
-      try {
-        const parsed = JSON.parse(errorData);
-        if (parsed.meta?.contactId) {
-          // Duplicate contact — update with latest form data
-          const contactId = parsed.meta.contactId;
-          await fetch(`${GHL_API_URL}${contactId}`, {
-            method: "PUT",
-            headers: ghlHeaders(apiKey),
-            body: JSON.stringify(payload),
-          });
-          return res.status(200).json({ success: true, contactId });
-        }
-      } catch {
-        /* not JSON, fall through */
-      }
       return res.status(response.status).json({ success: false, error: errorData });
     }
 
