@@ -61,7 +61,7 @@ const BookingPage: React.FC = () => {
     const endDate = endOfMonth.getTime();
 
     try {
-      const url = `/.netlify/functions/get-free-slots?calendarId=${CALENDAR_ID}&startDate=${startDate}&endDate=${endDate}&timezone=${encodeURIComponent(userTimezone)}`;
+      const url = `/api/get-free-slots?calendarId=${CALENDAR_ID}&startDate=${startDate}&endDate=${endDate}&timezone=${encodeURIComponent(userTimezone)}`;
 
       const response = await fetch(url);
 
@@ -108,7 +108,7 @@ const BookingPage: React.FC = () => {
         appointmentStatus: 'confirmed',
       };
 
-      const response = await fetch('/.netlify/functions/create-appointment', {
+      const response = await fetch('/api/create-appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

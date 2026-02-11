@@ -115,7 +115,7 @@ const InquiryForm: React.FC = () => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      const response = await fetch('/.netlify/functions/create-contact', {
+      const response = await fetch('/api/create-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
