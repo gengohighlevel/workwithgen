@@ -37,7 +37,7 @@ const handler: Handler = async (event) => {
     };
   }
 
-  const calendarId = event.queryStringParameters?.calendarId || "6fQ7GJMol3Wcl8o7DSHX";
+  const calendarId = event.queryStringParameters?.calendarId || "jGIhsfyokB3JIAKIiV47";
 
   try {
     const url = `https://services.leadconnectorhq.com/calendars/${calendarId}/free-slots?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}${timezone ? `&timezone=${encodeURIComponent(timezone)}` : ""}`;

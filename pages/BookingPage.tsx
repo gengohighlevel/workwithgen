@@ -12,7 +12,7 @@ interface CalendarSlots {
   [date: string]: string[];
 }
 
-const CALENDAR_ID = "6fQ7GJMol3Wcl8o7DSHX";
+const CALENDAR_ID = "jGIhsfyokB3JIAKIiV47";
 
 const BookingPage: React.FC = () => {
   const { state } = useLocation();
