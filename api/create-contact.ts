@@ -15,7 +15,7 @@ function buildContactPayload(body: Record<string, unknown>, locationId: string) 
     customFields: [
       { id: "crkMxg5CdJqBfizIWiwr", value: body.businessName || "" },
       { id: "rkFsKxzDjlAmITs3H23E", value: body.leadSource || "" },
-      { id: "y9Lyv8PhmusMEFhZHsEr", value: (body.services || []).join(", ") },
+      { id: "y9Lyv8PhmusMEFhZHsEr", value: (Array.isArray(body.services) ? body.services : []).join(", ") },
       { id: "yFLW0YKN2Qr9htx5oJ5d", value: body.ghlStatus || "" },
       { id: "5eg1MnLggnCrgH9eDQe0", value: body.projectType || "" },
       { id: "d9EEIcFiJ1YdG7bUK6Qm", value: body.timeline || "" },
