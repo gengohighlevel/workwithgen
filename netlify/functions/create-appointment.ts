@@ -6,6 +6,38 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+// GHL auto-creates a ghost contact for the calendar's assigned user on every
+// appointment booking. Find and delete it so it doesn't pollute the contact list.
+const GHOST_EMAIL = "gen.gohighlevel@gmail.com";
+
+async function deleteGhostContact(apiKey: string, locationId: string) {
+  try {
+    const searchUrl = `https://services.leadconnectorhq.com/contacts/?locationId=${locationId}&query=${encodeURIComponent(GHOST_EMAIL)}&limit=1`;
+    const res = await fetch(searchUrl, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        Accept: "application/json",
+        Version: "2021-07-28",
+      },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const ghost = data.contacts?.[0];
+    if (ghost?.id && ghost.email === GHOST_EMAIL) {
+      await fetch(`https://services.leadconnectorhq.com/contacts/${ghost.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          Accept: "application/json",
+          Version: "2021-07-28",
+        },
+      });
+    }
+  } catch {
+    // Non-critical — don't block the appointment response
+  }
+}
+
 const handler: Handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
@@ -91,6 +123,11 @@ const handler: Handler = async (event) => {
     );
 
     const data = await response.text();
+
+    // Clean up the ghost contact GHL auto-creates for the assigned calendar user
+    if (response.ok) {
+      deleteGhostContact(apiKey, locationId);
+    }
 
     return {
       statusCode: response.status,
