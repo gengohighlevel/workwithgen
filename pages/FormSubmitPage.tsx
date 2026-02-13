@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Mail, Clock, MapPin, Calendar, Shield } from 'lucide-react';
 import InquiryForm from '../components/InquiryForm';
+import BackgroundGrid from '../components/BackgroundGrid';
 
 const Reveal: React.FC<{ children: React.ReactNode; animation: string; delay?: string; className?: string }> = ({ children, animation, delay = '', className = '' }) => {
   const [hasRevealed, setHasRevealed] = useState(false);
@@ -26,8 +27,12 @@ const Reveal: React.FC<{ children: React.ReactNode; animation: string; delay?: s
 
 const FormSubmitPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#f5f5f7] dark:bg-black pt-24 pb-32 px-6 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen relative pt-24 pb-32 px-6 transition-colors duration-300">
+      {/* Custom Background is now z-0 */}
+      <BackgroundGrid />
+
+      {/* Content z-index bumped to 10 to sit above background */}
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           
           {/* Left Column: Information */}

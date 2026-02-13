@@ -69,7 +69,6 @@ const CustomSelect = ({
 const InquiryForm: React.FC = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -108,50 +107,9 @@ const InquiryForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitError(null);
-
-    try {
-      const nameParts = formData.fullName.trim().split(/\s+/);
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
-      const response = await fetch('/api/create-contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email: formData.email,
-          phone: formData.phone,
-          businessName: formData.businessName,
-          leadSource: formData.leadSource,
-          services: formData.services,
-          ghlStatus: formData.ghlStatus,
-          projectType: formData.projectType,
-          timeline: formData.timeline,
-          description: formData.description,
-        }),
-      });
-
-      const contentType = response.headers.get('content-type') || '';
-      if (!contentType.includes('application/json')) {
-        throw new Error('Server returned an unexpected response. Please try again later.');
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        setSubmitError(data.error || 'Failed to create contact');
-        setIsSubmitting(false);
-        return;
-      }
-
-      navigate('/booking', { state: { ...formData, contactId: data.contactId } });
-    } catch (err) {
-      console.error('Failed to create contact:', err);
-      setSubmitError(err instanceof Error ? err.message : 'Network error — please try again.');
-      setIsSubmitting(false);
-    }
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    navigate('/booking', { state: formData });
   };
 
   const servicesList = [
@@ -316,17 +274,10 @@ const InquiryForm: React.FC = () => {
            ></textarea>
          </div>
 
-         {/* Error Message */}
-         {submitError && (
-           <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-300">
-             {submitError}
-           </div>
-         )}
-
          {/* Submit Button */}
-         <button
-           type="submit"
-           disabled={isSubmitting}
+         <button 
+           type="submit" 
+           disabled={isSubmitting} 
            className="w-full bg-[#7c5cf6] hover:bg-[#6d4ce0] text-white font-semibold py-3.5 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-0.5"
          >
             {isSubmitting ? 'Sending...' : 'Submit Inquiry'}

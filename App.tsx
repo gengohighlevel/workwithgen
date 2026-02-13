@@ -6,7 +6,6 @@ import LandingPage from './pages/LandingPage';
 import FormSubmitPage from './pages/FormSubmitPage';
 import BookingPage from './pages/BookingPage';
 import CustomCursor from './components/CustomCursor';
-import GenerativeNetwork from './components/GenerativeNetwork';
 import { ThemeProvider } from './context/ThemeContext';
 
 const ScrollToHash = () => {
@@ -53,8 +52,6 @@ const App: React.FC = () => {
     <ThemeProvider>
       <Router>
         <ForceHomeRedirect />
-        {/* Generative Background - Fixed Z-Index handled internally */}
-        <GenerativeNetwork />
         
         <CustomCursor />
         <ScrollToHash />
