@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 import { 
   ArrowLeft, 
   CheckCircle2, 
@@ -627,10 +628,44 @@ const servicesData: Record<string, {
   }
 };
 
+const seoDescriptions: Record<string, string> = {
+  'account-infrastructure': 'Complete GoHighLevel sub-account setup including domains, mailgun configuration, security compliance, and user permission management for production-ready environments.',
+  'advanced-workflows': 'Intelligent automation logic using n8n, Make, and Zapier. Behavior-based branching, webhook integrations, and cross-channel marketing workflows for GoHighLevel.',
+  'pipeline-engineering': 'Structured deal tracking with automated stage actions, stale opportunity detection, lost deal reactivation, and probability-based revenue forecasting in GoHighLevel.',
+  'custom-dashboards': 'Custom KPI dashboards inside GoHighLevel. Track lead velocity, conversion rates, agent performance, and campaign ROI with accurate, decision-driving metrics.',
+  'snapshot-development': 'Deployable GoHighLevel snapshots for agencies. One-click sub-account deployment with standardized workflows, pipelines, and version-controlled configurations.',
+  'system-audits': 'Deep-dive GoHighLevel system analysis. Detect automation conflicts, clean up tags and databases, review integration security, and get a prioritized optimization roadmap.'
+};
+
 const ServiceDetailsPage: React.FC = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const service = slug ? servicesData[slug] : null;
+
+  const jsonLd = useMemo(() => {
+    if (!service || !slug) return undefined;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.title,
+      description: seoDescriptions[slug] || service.subtitle,
+      provider: {
+        '@type': 'Organization',
+        name: 'Work with Gen',
+        url: 'https://workwithgen.space'
+      },
+      url: `https://workwithgen.space/services/${slug}`,
+      serviceType: 'GoHighLevel Automation'
+    };
+  }, [service, slug]);
+
+  useSEO({
+    title: service ? `${service.title} - ${service.subtitle}` : 'Service Not Found',
+    description: slug && seoDescriptions[slug] ? seoDescriptions[slug] : 'GoHighLevel service details.',
+    canonical: slug ? `https://workwithgen.space/services/${slug}` : undefined,
+    ogImage: service?.images?.[0],
+    jsonLd
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
