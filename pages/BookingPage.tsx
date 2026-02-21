@@ -194,7 +194,7 @@ const BookingPage: React.FC = () => {
             <p className="text-xl text-[#1d1d1f] dark:text-white font-semibold leading-relaxed">
               Your appointment has been successfully scheduled and confirmed in our system.
             </p>
-            <p className="text-lg text-[#86868b] dark:text-gray-400 font-medium leading-relaxed">
+            <p className="text-lg text-[#424245] dark:text-gray-400 font-medium leading-relaxed">
               We’ve received your details and are looking forward to speaking with you about your GoHighLevel optimization.
             </p>
           </div>
@@ -207,7 +207,7 @@ const BookingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-2 text-[#1d1d1f] dark:text-white">Check Your Inbox</h3>
-                  <p className="text-[#86868b] dark:text-gray-400 text-base leading-relaxed">
+                  <p className="text-[#424245] dark:text-gray-400 text-base leading-relaxed">
                     A confirmation email with your appointment details has been sent to your email address. Please review it carefully and keep it for reference.
                   </p>
                 </div>
@@ -221,7 +221,7 @@ const BookingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-2 text-[#1d1d1f] dark:text-white">Discovery Call</h3>
-                  <p className="text-[#86868b] dark:text-gray-400 text-base leading-relaxed">
+                  <p className="text-[#424245] dark:text-gray-400 text-base leading-relaxed">
                     Your discovery call is officially booked. The confirmation email includes the meeting link, date, and time for your session.
                   </p>
                 </div>
@@ -229,7 +229,7 @@ const BookingPage: React.FC = () => {
             </div>
             
             <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5 text-center">
-              <p className="text-sm font-medium text-[#86868b] dark:text-gray-500 bg-gray-50 dark:bg-zinc-800/50 py-2 px-4 rounded-full inline-block">
+              <p className="text-sm font-medium text-[#424245] dark:text-gray-500 bg-gray-50 dark:bg-zinc-800/50 py-2 px-4 rounded-full inline-block">
                 If you don’t see the email within a few minutes, please check your spam or promotions folder.
               </p>
             </div>
@@ -260,7 +260,7 @@ const BookingPage: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-[#1d1d1f] dark:text-white">
             Select a <span className="text-[#937BF0]">Time</span>
           </h1>
-          <p className="text-xl text-[#86868b] dark:text-gray-400 font-medium max-w-2xl mx-auto">
+          <p className="text-xl text-[#424245] dark:text-gray-400 font-medium max-w-2xl mx-auto">
             Choose a slot that works for you. Our calendar is automatically synchronized for your convenience.
           </p>
         </div>
@@ -329,7 +329,7 @@ const BookingPage: React.FC = () => {
 
              <div className="grid grid-cols-7 gap-4 mb-4">
                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                 <div key={day} className="text-center text-xs font-bold text-[#86868b] dark:text-gray-500 uppercase tracking-wider">
+                 <div key={day} className="text-center text-xs font-bold text-[#52525b] dark:text-gray-500 uppercase tracking-wider">
                    {day}
                  </div>
                ))}
@@ -377,7 +377,7 @@ const BookingPage: React.FC = () => {
                </div>
              )}
              
-             <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5 flex items-center justify-center gap-2 text-xs text-[#86868b] dark:text-gray-500">
+             <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5 flex items-center justify-center gap-2 text-xs text-[#52525b] dark:text-gray-500">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Times displayed in {userTimezone}</span>
              </div>
@@ -389,7 +389,7 @@ const BookingPage: React.FC = () => {
                <div className="glass-card bg-white/70 dark:bg-zinc-900/70 p-8 rounded-[2.5rem] border-gray-100 dark:border-zinc-800 shadow-xl h-full flex flex-col animate-reveal-up">
                  <h3 className="text-xl font-bold mb-6 text-[#1d1d1f] dark:text-white text-center">
                    Available Times <br/>
-                   <span className="text-sm font-normal text-[#86868b] dark:text-gray-400">
+                   <span className="text-sm font-normal text-[#52525b] dark:text-gray-400">
                      for {selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
                    </span>
                  </h3>
@@ -413,7 +413,7 @@ const BookingPage: React.FC = () => {
                      ))}
                    </div>
                    {getSlotsForDate(selectedDate).length === 0 && (
-                     <p className="text-center text-[#86868b] my-10">No slots available for this date.</p>
+                     <p className="text-center text-[#424245] my-10">No slots available for this date.</p>
                    )}
                  </div>
 
@@ -441,7 +441,7 @@ const BookingPage: React.FC = () => {
                  </div>
                </div>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center p-12 text-center text-[#86868b] dark:text-gray-500 border-2 border-dashed border-gray-200 dark:border-zinc-800 rounded-[2.5rem]">
+              <div className="h-full flex flex-col items-center justify-center p-12 text-center text-[#424245] dark:text-gray-500 border-2 border-dashed border-gray-200 dark:border-zinc-800 rounded-[2.5rem]">
                 <CalendarIcon className="w-12 h-12 mb-4 opacity-20" />
                 <p>Select a date to view available time slots.</p>
               </div>

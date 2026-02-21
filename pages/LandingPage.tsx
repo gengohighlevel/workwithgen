@@ -214,13 +214,40 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
     }
   };
 
+  const descriptionParts = project.description.split('\n\n');
+
   return (
     <div 
-      className="min-w-[340px] md:min-w-[440px] snap-center bg-white/80 dark:bg-zinc-900/50 backdrop-blur-sm rounded-[2.5rem] overflow-hidden border border-gray-200 dark:border-zinc-800 hover:border-purple-300 dark:hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-500 group flex flex-col h-[680px]"
+      className="min-w-[340px] md:min-w-[600px] snap-center bg-white/80 dark:bg-zinc-900/50 backdrop-blur-sm rounded-[2.5rem] overflow-hidden border border-gray-200 dark:border-zinc-800 hover:border-purple-300 dark:hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-500 group flex flex-col h-[680px]"
     >
+      {/* Content Area */}
+      <div className="p-8 flex flex-col flex-1 min-h-0">
+        <h3 className="text-2xl font-bold mb-6 text-[#1d1d1f] dark:text-white group-hover:text-[#a855f7] transition-colors duration-300 leading-tight shrink-0">
+          {project.title}
+        </h3>
+        
+        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative">
+           <div className={`grid ${descriptionParts.length > 1 ? 'md:grid-cols-2 gap-8' : 'grid-cols-1'}`}>
+             {descriptionParts.map((part, idx) => (
+               <p key={idx} className="text-[#424245] dark:text-gray-400 leading-relaxed font-medium text-[15px] whitespace-pre-wrap">
+                 {part}
+               </p>
+             ))}
+           </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-6 pt-4 border-t border-gray-100 dark:border-white/5 shrink-0">
+          {project.tags.map((tag, tagIdx) => (
+            <span key={tagIdx} className="px-3 py-1 bg-[#f5f5f7] dark:bg-zinc-800 text-[10px] font-bold text-[#86868b] dark:text-gray-400 rounded-full uppercase tracking-widest border border-transparent group-hover:border-purple-100 group-hover:bg-purple-50 dark:group-hover:bg-purple-900/20 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Image Area */}
       {project.images && project.images.length > 0 ? (
-        <div className="h-[280px] w-full bg-gray-100 dark:bg-zinc-800 relative overflow-hidden shrink-0 group-hover:opacity-100 transition-opacity">
+        <div className="h-[280px] w-full bg-gray-100 dark:bg-zinc-800 relative overflow-hidden shrink-0 group-hover:opacity-100 transition-opacity mt-auto">
           {project.images.map((img, idx) => {
             const isVideo = img.toLowerCase().endsWith('.mp4');
             const isActive = idx === currentImageIdx;
@@ -239,7 +266,7 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
             );
           })}
           {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none z-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent pointer-events-none z-20"></div>
           
           {/* Navigation Arrows */}
           {project.images.length > 1 && (
@@ -274,31 +301,10 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
           )}
         </div>
       ) : (
-         <div className="h-[280px] w-full bg-gradient-to-r from-purple-50/20 to-indigo-50/20 dark:from-purple-900/10 dark:to-indigo-900/10 shrink-0 flex items-center justify-center">
+         <div className="h-[280px] w-full bg-gradient-to-r from-purple-50/20 to-indigo-50/20 dark:from-purple-900/10 dark:to-indigo-900/10 shrink-0 flex items-center justify-center mt-auto">
              <span className="text-gray-400 dark:text-gray-600 font-medium">No Preview</span>
          </div>
       )}
-
-      {/* Content Area */}
-      <div className="p-8 flex flex-col flex-1 min-h-0">
-        <h3 className="text-2xl font-bold mb-4 text-[#1d1d1f] dark:text-white group-hover:text-[#a855f7] transition-colors duration-300 leading-tight shrink-0">
-          {project.title}
-        </h3>
-        
-        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative">
-           <p className="text-[#86868b] dark:text-gray-400 leading-relaxed font-medium text-[15px] whitespace-pre-wrap">
-             {project.description}
-           </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mt-6 pt-4 border-t border-gray-100 dark:border-white/5 shrink-0">
-          {project.tags.map((tag, tagIdx) => (
-            <span key={tagIdx} className="px-3 py-1 bg-[#f5f5f7] dark:bg-zinc-800 text-[10px] font-bold text-[#86868b] dark:text-gray-400 rounded-full uppercase tracking-widest border border-transparent group-hover:border-purple-100 group-hover:bg-purple-50 dark:group-hover:bg-purple-900/20 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
@@ -435,7 +441,7 @@ const LandingPage: React.FC = () => {
               </Reveal>
               
               <Reveal animation="animate-reveal-up" delay="animation-delay-400">
-                <p className="text-xl text-[#86868b] dark:text-gray-400 max-w-lg mb-12 mx-auto lg:mx-0 font-medium leading-relaxed">
+                <p className="text-xl text-[#424245] dark:text-gray-400 max-w-lg mb-12 mx-auto lg:mx-0 font-medium leading-relaxed">
                   Stop fighting manual tasks. Gen helps business owners optimize Go High Level, build powerful CRM workflows, and automate sales cycles for massive growth.
                 </p>
               </Reveal>
@@ -469,7 +475,7 @@ const LandingPage: React.FC = () => {
                         key={index} 
                         src={url} 
                         alt={`Partner Logo ${index + 1}`} 
-                        className="h-6 md:h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 dark:hover:grayscale-0 dark:hover:opacity-100 dark:invert dark:opacity-60 dark:hover:invert-0 hover:scale-110 transition-all duration-500 cursor-pointer"
+                        className="h-10 md:h-14 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 dark:hover:grayscale-0 dark:hover:opacity-100 dark:invert dark:opacity-60 dark:hover:invert-0 hover:scale-110 transition-all duration-500 cursor-pointer p-2 rounded-xl dark:hover:bg-white/10"
                       />
                     ))}
                   </div>
@@ -525,7 +531,7 @@ const LandingPage: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6">
             <Reveal animation="animate-reveal-up" className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 dark:text-white">Optimized Performance</h2>
-              <p className="text-[#86868b] dark:text-gray-400 max-w-2xl mx-auto text-lg">
+              <p className="text-[#424245] dark:text-gray-400 max-w-2xl mx-auto text-lg">
                 Data driven results from properly structured GoHighLevel environments. We turn chaotic accounts into streamlined revenue engines.
               </p>
             </Reveal>
@@ -535,7 +541,7 @@ const LandingPage: React.FC = () => {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <h3 className="text-xl md:text-2xl font-bold dark:text-white">System Throughput</h3>
-                    <p className="text-[#86868b] dark:text-gray-400 text-xs md:text-sm">Workflow efficiency increase</p>
+                    <p className="text-[#424245] dark:text-gray-400 text-xs md:text-sm">Workflow efficiency increase</p>
                   </div>
                   <div className="bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">
                     <CountUp end={124.5} decimals={1} prefix="+" suffix="%" />
@@ -550,8 +556,8 @@ const LandingPage: React.FC = () => {
                           <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: theme === 'dark' ? '#9ca3af' : '#86868b' }} dy={10} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: theme === 'dark' ? '#9ca3af' : '#86868b' }} dx={-5} />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: theme === 'dark' ? '#9ca3af' : '#424245' }} dy={10} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: theme === 'dark' ? '#9ca3af' : '#424245' }} dx={-5} />
                       <Tooltip 
                         contentStyle={{ 
                           borderRadius: '12px', 
@@ -585,8 +591,8 @@ const LandingPage: React.FC = () => {
                    <h4 className="text-4xl font-bold mb-2 dark:text-white">
                      <CountUp end={99.9} decimals={1} suffix="%" />
                    </h4>
-                   <p className="text-[#86868b] dark:text-gray-400 text-sm font-medium uppercase tracking-wider">UPTIME & RELIABILITY</p>
-                   <p className="mt-4 text-sm text-[#86868b] dark:text-gray-400 leading-relaxed">Stable automation structures that do not break under scale.</p>
+                   <p className="text-[#424245] dark:text-gray-400 text-sm font-medium uppercase tracking-wider">UPTIME & RELIABILITY</p>
+                   <p className="mt-4 text-sm text-[#424245] dark:text-gray-400 leading-relaxed">Stable automation structures that do not break under scale.</p>
                 </div>
                 <div className="glass-card rounded-[2.5rem] p-8 flex-1 border-indigo-100 dark:border-indigo-900/30 bg-white/60 dark:bg-zinc-900/60">
                    <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-6">
@@ -595,8 +601,8 @@ const LandingPage: React.FC = () => {
                    <h4 className="text-4xl font-bold mb-2 dark:text-white">
                      <CountUp end={500} suffix="+" />
                    </h4>
-                   <p className="text-[#86868b] dark:text-gray-400 text-sm font-medium uppercase tracking-wider">HOURS RECLAIMED</p>
-                   <p className="mt-4 text-sm text-[#86868b] dark:text-gray-400 leading-relaxed">Monthly administrative time saved through intelligent workflows.</p>
+                   <p className="text-[#424245] dark:text-gray-400 text-sm font-medium uppercase tracking-wider">HOURS RECLAIMED</p>
+                   <p className="mt-4 text-sm text-[#424245] dark:text-gray-400 leading-relaxed">Monthly administrative time saved through intelligent workflows.</p>
                 </div>
               </div>
             </div>
@@ -608,27 +614,36 @@ const LandingPage: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6">
             <Reveal animation="animate-reveal-up" className="max-w-2xl mb-16">
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-[#1d1d1f] dark:text-white">GHL Architectural Services</h2>
-              <p className="text-xl text-[#86868b] dark:text-gray-400 font-medium leading-relaxed">
+              <p className="text-xl text-[#424245] dark:text-gray-400 font-medium leading-relaxed">
                 We provide enterprise grade configuration for HighLevel. From foundational setup to complex logic engineering.
               </p>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                {[
-                 { icon: <Database />, title: "Account Infrastructure", desc: "Complete sub-account setup including domains, mailgun configuration, and security compliance protocols.", color: "purple" },
-                 { icon: <GitBranch />, title: "Advanced Workflows", desc: "Complex automation logic using internal triggers, webhooks, and conditions to handle leads automatically.", color: "indigo" },
-                 { icon: <Zap />, title: "Pipeline Engineering", desc: "Structured deal tracking stages that ensure no lead is ever lost in the sales process.", color: "orange" },
-                 { icon: <LineChart />, title: "Custom Dashboards", desc: "High level reporting views to track ROI, lead velocity, and team performance directly inside your GHL instance.", color: "green" },
-                 { icon: <Layout />, title: "Snapshot Development", desc: "Proprietary snapshots built for agencies to deploy proven systems to sub accounts in seconds.", color: "blue" },
-                 { icon: <Settings />, title: "System Audits", desc: "Deep dive analysis of existing accounts to identify bottlenecks, broken automations, and optimization opportunities.", color: "pink" }
+                 { icon: <Database />, title: "Account Infrastructure", slug: "account-infrastructure", desc: "Complete sub-account setup including domains, mailgun configuration, and security compliance protocols.", color: "purple" },
+                 { icon: <GitBranch />, title: "Advanced Workflows", slug: "advanced-workflows", desc: "Complex automation logic using internal triggers, webhooks, and conditions to handle leads automatically.", color: "indigo" },
+                 { icon: <Zap />, title: "Pipeline Engineering", slug: "pipeline-engineering", desc: "Structured deal tracking stages that ensure no lead is ever lost in the sales process.", color: "orange" },
+                 { icon: <LineChart />, title: "Custom Dashboards", slug: "custom-dashboards", desc: "High level reporting views to track ROI, lead velocity, and team performance directly inside your GHL instance.", color: "green" },
+                 { icon: <Layout />, title: "Snapshot Development", slug: "snapshot-development", desc: "Proprietary snapshots built for agencies to deploy proven systems to sub accounts in seconds.", color: "blue" },
+                 { icon: <Settings />, title: "System Audits", slug: "system-audits", desc: "Deep dive analysis of existing accounts to identify bottlenecks, broken automations, and optimization opportunities.", color: "pink" }
                ].map((item, i) => (
-                 <div key={i} className={`glass-card rounded-[2rem] p-8 transition-all duration-300 group border border-gray-100 dark:border-white/10 bg-white/60 dark:bg-zinc-900/60`}>
-                    <div className={`w-12 h-12 bg-${item.color}-50 dark:bg-${item.color}-900/20 text-${item.color}-600 dark:text-${item.color}-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-${item.color}-600 group-hover:text-white transition-all`}>
-                      {React.cloneElement(item.icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6' })}
+                 <Link 
+                   to={`/services/${item.slug}`} 
+                   key={i} 
+                   className={`glass-card rounded-[2rem] p-8 transition-all duration-300 group border border-gray-100 dark:border-white/10 bg-white/60 dark:bg-zinc-900/60 hover:scale-[1.02] cursor-pointer`}
+                 >
+                    <div className="flex justify-between items-start mb-6">
+                      <div className={`w-12 h-12 bg-${item.color}-50 dark:bg-${item.color}-900/20 text-${item.color}-600 dark:text-${item.color}-400 rounded-2xl flex items-center justify-center group-hover:bg-${item.color}-600 group-hover:text-white transition-all`}>
+                        {React.cloneElement(item.icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6' })}
+                      </div>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-0 translate-x-2 duration-300">
+                        <ArrowRight className={`w-5 h-5 text-${item.color}-500 dark:text-${item.color}-400`} />
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-[#1d1d1f] dark:text-white">{item.title}</h3>
-                    <p className="text-[#86868b] dark:text-gray-400 leading-relaxed font-medium">{item.desc}</p>
-                 </div>
+                    <h3 className="text-xl font-bold mb-3 text-[#1d1d1f] dark:text-white group-hover:text-[#a855f7] transition-colors">{item.title}</h3>
+                    <p className="text-[#424245] dark:text-gray-400 leading-relaxed font-medium">{item.desc}</p>
+                 </Link>
                ))}
             </div>
           </div>
@@ -640,7 +655,7 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-end mb-12">
               <Reveal animation="animate-reveal-up" className="max-w-2xl">
                 <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-[#1d1d1f] dark:text-white">Featured Projects</h2>
-                <p className="text-lg text-[#86868b] dark:text-gray-400 font-medium">
+                <p className="text-lg text-[#424245] dark:text-gray-400 font-medium">
                   A selection of high-impact projects for clients worldwide.
                 </p>
               </Reveal>
@@ -700,7 +715,7 @@ const LandingPage: React.FC = () => {
                       <CountUp end={67} suffix="%" />
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#86868b] dark:text-gray-400 font-medium">
+                  <p className="text-[11px] text-[#424245] dark:text-gray-400 font-medium">
                     Monitoring <CountUp end={4567} useLocale={true} /> active opportunities.
                   </p>
                 </div>
@@ -712,7 +727,7 @@ const LandingPage: React.FC = () => {
                     Features that<br />
                     <span className="text-[#a855f7] inline-block">Empower</span> Operators.
                   </h2>
-                  <p className="mt-8 text-xl text-[#86868b] dark:text-gray-400 leading-relaxed font-medium">
+                  <p className="mt-8 text-xl text-[#424245] dark:text-gray-400 leading-relaxed font-medium">
                     We implement tools that make managing your GoHighLevel instance effortless. 
                     Systems that work together to provide clarity and control.
                   </p>
@@ -726,7 +741,7 @@ const LandingPage: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="text-xl font-bold mb-2 text-[#1d1d1f] dark:text-white">Unified GHL Dashboard</h3>
-                        <p className="text-[#86868b] dark:text-gray-400 text-lg font-medium leading-relaxed">
+                        <p className="text-[#424245] dark:text-gray-400 text-lg font-medium leading-relaxed">
                           Visualize your pipelines, conversation rates, and appointment bookings in one central view.
                         </p>
                       </div>
@@ -740,7 +755,7 @@ const LandingPage: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="text-xl font-bold mb-2 text-[#1d1d1f] dark:text-white">Automation Logic</h3>
-                        <p className="text-[#86868b] dark:text-gray-400 text-lg font-medium leading-relaxed">
+                        <p className="text-[#424245] dark:text-gray-400 text-lg font-medium leading-relaxed">
                           Robust workflows that handle lead nurturing, follow ups, and status updates without human intervention.
                         </p>
                       </div>
@@ -754,7 +769,7 @@ const LandingPage: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="text-xl font-bold mb-2 text-[#1d1d1f] dark:text-white">Scalable Architecture</h3>
-                        <p className="text-[#86868b] dark:text-gray-400 text-lg font-medium leading-relaxed">
+                        <p className="text-[#424245] dark:text-gray-400 text-lg font-medium leading-relaxed">
                           Accounts built with clear naming conventions and folder structures, ready for massive scale.
                         </p>
                       </div>
@@ -783,7 +798,7 @@ const LandingPage: React.FC = () => {
                       <Settings className="w-8 h-8 text-purple-600" />
                     </div>
                     <h3 className="text-xl font-extrabold mb-3 dark:text-white">Audit and Map</h3>
-                    <p className="text-sm text-[#86868b] dark:text-gray-400 font-medium max-w-[200px]">We analyze your current GHL setup and map out required improvements.</p>
+                    <p className="text-sm text-[#424245] dark:text-gray-400 font-medium max-w-[200px]">We analyze your current GHL setup and map out required improvements.</p>
                   </div>
                 </Reveal>
 
@@ -793,7 +808,7 @@ const LandingPage: React.FC = () => {
                       <Zap className="w-8 h-8 text-white fill-white" />
                     </div>
                     <h3 className="text-xl font-extrabold mb-3 dark:text-white">Build and Automate</h3>
-                    <p className="text-sm text-[#86868b] dark:text-gray-400 font-medium max-w-[200px]">Execution of workflows, pipelines, and integrations within your account.</p>
+                    <p className="text-sm text-[#424245] dark:text-gray-400 font-medium max-w-[200px]">Execution of workflows, pipelines, and integrations within your account.</p>
                   </div>
                 </Reveal>
 
@@ -803,7 +818,7 @@ const LandingPage: React.FC = () => {
                       <ShieldCheck className="w-8 h-8 text-purple-600" />
                     </div>
                     <h3 className="text-xl font-extrabold mb-3 dark:text-white">Launch and Scale</h3>
-                    <p className="text-sm text-[#86868b] dark:text-gray-400 font-medium max-w-[200px]">Final testing, team training, and handover of your optimized system.</p>
+                    <p className="text-sm text-[#424245] dark:text-gray-400 font-medium max-w-[200px]">Final testing, team training, and handover of your optimized system.</p>
                   </div>
                 </Reveal>
               </div>
@@ -833,7 +848,7 @@ const LandingPage: React.FC = () => {
                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-[1.1] text-[#1d1d1f] dark:text-white">
                   Unlock the Full Power of <br /> <span className="text-[#a855f7]">GoHighLevel</span> Today.
                 </h2>
-                <p className="text-xl text-[#86868b] dark:text-gray-400 max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
+                <p className="text-xl text-[#424245] dark:text-gray-400 max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
                   Stop managing the software and start managing your growth. Let's build a custom automation roadmap that puts your business on autopilot.
                 </p>
                 <div className="flex flex-col items-center gap-4">
@@ -843,7 +858,7 @@ const LandingPage: React.FC = () => {
                        Book Discovery Call
                      </Link>
                    </Magnetic>
-                   <p className="text-xs text-[#86868b] dark:text-gray-500 font-semibold tracking-wide uppercase opacity-70">Strictly Confidential. No Obligation.</p>
+                   <p className="text-xs text-[#424245] dark:text-gray-500 font-semibold tracking-wide uppercase opacity-70">Strictly Confidential. No Obligation.</p>
                 </div>
              </div>
              <div className="absolute top-0 right-0 w-80 h-80 bg-purple-50 dark:bg-purple-900/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-[100px] opacity-60"></div>

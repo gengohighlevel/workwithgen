@@ -46,7 +46,7 @@ const FormSubmitPage: React.FC = () => {
                   Ready to
                   <span className="text-[#a855f7]">Optimize?</span>
                 </h1>
-                <p className="text-xl text-[#86868b] dark:text-gray-400 font-medium leading-relaxed max-w-lg mt-6">
+                <p className="text-xl text-[#424245] dark:text-gray-400 font-medium leading-relaxed max-w-lg mt-6">
                   Whether you are a new GoHighLevel user or an established agency, I am here to bridge the gap between your goals and the platform capabilities. Fill out the form to begin.
                 </p>
               </div>
@@ -59,7 +59,7 @@ const FormSubmitPage: React.FC = () => {
                     <Mail className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase font-bold text-[#86868b] dark:text-gray-500 tracking-widest mb-0.5">Email Us</p>
+                    <p className="text-[10px] uppercase font-bold text-[#52525b] dark:text-gray-500 tracking-widest mb-0.5">Email Us</p>
                     <p className="font-bold text-base text-[#1d1d1f] dark:text-white">info@connect.workwithgen.space</p>
                   </div>
                 </div>
@@ -69,7 +69,7 @@ const FormSubmitPage: React.FC = () => {
                     <Calendar className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase font-bold text-[#86868b] dark:text-gray-500 tracking-widest mb-0.5">Availability</p>
+                    <p className="text-[10px] uppercase font-bold text-[#52525b] dark:text-gray-500 tracking-widest mb-0.5">Availability</p>
                     <p className="font-bold text-base text-[#1d1d1f] dark:text-white">Monday - Friday, 9 AM - 5 PM EST</p>
                   </div>
                 </div>
@@ -79,7 +79,7 @@ const FormSubmitPage: React.FC = () => {
                     <MapPin className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase font-bold text-[#86868b] dark:text-gray-500 tracking-widest mb-0.5">Location</p>
+                    <p className="text-[10px] uppercase font-bold text-[#52525b] dark:text-gray-500 tracking-widest mb-0.5">Location</p>
                     <p className="font-bold text-base text-[#1d1d1f] dark:text-white">Silang, Cavite, Philippines</p>
                   </div>
                 </div>
@@ -92,7 +92,7 @@ const FormSubmitPage: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
                     <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <p className="text-sm font-medium text-[#86868b] dark:text-gray-400 leading-relaxed">
+                  <p className="text-sm font-medium text-[#424245] dark:text-gray-400 leading-relaxed">
                     Typically responds within 24 hours with a calendar link.
                   </p>
                 </div>

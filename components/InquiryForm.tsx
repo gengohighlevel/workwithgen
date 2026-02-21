@@ -133,7 +133,7 @@ const InquiryForm: React.FC = () => {
             />
          </div>
          <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-3">Work with Gen</h2>
-         <p className="text-[#86868b] dark:text-gray-400 text-[15px]">Tell us about your project and we'll get back to you shortly.</p>
+         <p className="text-[#424245] dark:text-gray-400 text-[15px]">Tell us about your project and we'll get back to you shortly.</p>
        </div>
 
        <form onSubmit={handleSubmit} className="space-y-6">

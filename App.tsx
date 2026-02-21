@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import FormSubmitPage from './pages/FormSubmitPage';
 import BookingPage from './pages/BookingPage';
+import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import CustomCursor from './components/CustomCursor';
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -62,6 +63,7 @@ const App: React.FC = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/submit" element={<FormSubmitPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailsPage />} />
             </Routes>
           </main>
           <Footer />
