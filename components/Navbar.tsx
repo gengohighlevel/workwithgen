@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const isSpecialPage = pathname === '/submit' || pathname === '/booking';
 
   return (
-    <nav className="fixed top-0 w-full z-50 apple-blur border-b border-gray-100 dark:border-white/10 h-14 flex items-center transition-colors duration-300">
+    <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/60 dark:bg-black/60 border-b border-white/20 dark:border-white/10 h-14 flex items-center transition-all duration-300 shadow-sm">
       <div className="max-w-screen-xl mx-auto w-full px-6 relative flex items-center justify-between">
         
         {/* Left: Logo */}

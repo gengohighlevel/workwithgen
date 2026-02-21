@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Mail, Clock, MapPin, Calendar, Shield } from 'lucide-react';
 import InquiryForm from '../components/InquiryForm';
 import BackgroundGrid from '../components/BackgroundGrid';
-import useSEO from '../hooks/useSEO';
 
 const Reveal: React.FC<{ children: React.ReactNode; animation: string; delay?: string; className?: string }> = ({ children, animation, delay = '', className = '' }) => {
   const [hasRevealed, setHasRevealed] = useState(false);
@@ -27,12 +26,6 @@ const Reveal: React.FC<{ children: React.ReactNode; animation: string; delay?: s
 };
 
 const FormSubmitPage: React.FC = () => {
-  useSEO({
-    title: 'Book a Discovery Call',
-    description: 'Schedule a consultation to discuss your GoHighLevel optimization needs. Get expert CRM automation, pipeline engineering, and workflow design for your business.',
-    canonical: 'https://workwithgen.space/submit'
-  });
-
   return (
     <div className="min-h-screen relative pt-24 pb-32 px-6 transition-colors duration-300">
       {/* Custom Background is now z-0 */}
