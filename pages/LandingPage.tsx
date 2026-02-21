@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { 
   ArrowRight, 
@@ -311,6 +312,42 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
 
 const LandingPage: React.FC = () => {
   const { theme } = useTheme();
+
+  const jsonLd = useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Work with Gen',
+    url: 'https://workwithgen.space',
+    logo: 'https://storage.googleapis.com/msgsndr/P7WTdwLMsDsnEHkSqqXD/media/692ae4452b865e8154ad422d.png',
+    description: 'Elite GoHighLevel automation and CRM optimization services for agencies and business owners.',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'info@connect.workwithgen.space',
+      contactType: 'customer service',
+      availableLanguage: 'English'
+    },
+    sameAs: [],
+    offers: {
+      '@type': 'AggregateOffer',
+      offerCount: 6,
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Account Infrastructure' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Advanced Workflows' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pipeline Engineering' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Custom Dashboards' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Snapshot Development' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'System Audits' } }
+      ]
+    }
+  }), []);
+
+  useSEO({
+    title: 'GoHighLevel Automation & CRM Optimization',
+    description: 'Master CRM pipelines, GHL workflows, and sales automation. Elite GoHighLevel architecture for agencies and business owners. Book a discovery call today.',
+    canonical: 'https://workwithgen.space/',
+    jsonLd
+  });
+
   const partners = [
     "https://storage.googleapis.com/msgsndr/P7WTdwLMsDsnEHkSqqXD/media/69440bbfaca6abcfd159a9d9.webp",
     "https://storage.googleapis.com/msgsndr/P7WTdwLMsDsnEHkSqqXD/media/69440bbf5b256b06a9a3cf7e.png",

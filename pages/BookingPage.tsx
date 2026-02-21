@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 import { CheckCircle2, Mail, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, Loader2, AlertCircle, Video } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -16,6 +17,12 @@ const CALENDAR_ID = "jGIhsfyokB3JIAKIiV47";
 const GHL_API_KEY = process.env.GHL_API_KEY || ""; 
 
 const BookingPage: React.FC = () => {
+  useSEO({
+    title: 'Select a Time',
+    description: 'Choose an available time slot for your GoHighLevel discovery call. Our calendar syncs in real-time for your convenience.',
+    canonical: 'https://workwithgen.space/booking'
+  });
+
   const { state } = useLocation();
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const { theme } = useTheme();
