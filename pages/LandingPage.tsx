@@ -479,7 +479,7 @@ const LandingPage: React.FC = () => {
               
               <Reveal animation="animate-reveal-up" delay="animation-delay-400">
                 <p className="text-xl text-[#424245] dark:text-gray-400 max-w-lg mb-12 mx-auto lg:mx-0 font-medium leading-relaxed">
-                  Stop fighting manual tasks. Gen helps business owners optimize Go High Level, build powerful CRM workflows, and automate sales cycles for massive growth.
+                  Stop fighting manual tasks. Gen is a GoHighLevel Certified Admin that helps business owners optimize Go High Level, build powerful CRM workflows, and automate sales cycles for massive growth.
                 </p>
               </Reveal>
               
@@ -528,6 +528,11 @@ const LandingPage: React.FC = () => {
                    className="w-full h-auto object-contain drop-shadow-2xl z-10 relative transition-all duration-500 hover:scale-[1.02] hover:drop-shadow-[0_0_35px_rgba(168,85,247,0.5)]"
                  />
                  
+                 {/* HighLevel Certified Badge */}
+                 <a href="https://directory.gohighlevel.com/ghl/4ef3fc8725479f0e32bd41b0dd2313eb?from=badge" title="Find me on HighLevel Directory" target="_blank" rel="noopener noreferrer" className="absolute -bottom-20 -left-4 md:-left-12 z-30 transition-transform duration-500 hover:-translate-y-2 hover:scale-105">
+                   <img src="https://directory.gohighlevel.com/images/BD_Certified_Admin_Main_Badge.png" alt="HighLevel Certified Admin Badge" className="w-24 md:w-32" style={{ border: 'none' }} />
+                 </a>
+
                  {/* Floating Badges */}
                  <div className="absolute -bottom-6 -left-4 md:-left-12 z-20 glass-card p-4 rounded-[1.5rem] w-44 md:w-56 scale-90 md:scale-100 shadow-lg transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(168,85,247,0.15)] cursor-default bg-white/60 dark:bg-zinc-900/60">
                    <div className="flex items-center gap-3">
