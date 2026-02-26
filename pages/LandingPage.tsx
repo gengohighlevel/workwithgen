@@ -529,8 +529,8 @@ const LandingPage: React.FC = () => {
                  />
                  
                  {/* HighLevel Certified Badge */}
-                 <a href="https://directory.gohighlevel.com/ghl/4ef3fc8725479f0e32bd41b0dd2313eb?from=badge" title="Find me on HighLevel Directory" target="_blank" rel="noopener noreferrer" className="absolute -bottom-20 -left-4 md:-left-12 z-30 transition-transform duration-500 hover:-translate-y-2 hover:scale-105">
-                   <img src="https://directory.gohighlevel.com/images/BD_Certified_Admin_Main_Badge.png" alt="HighLevel Certified Admin Badge" className="w-24 md:w-32" style={{ border: 'none' }} />
+                 <a href="https://directory.gohighlevel.com/ghl/4ef3fc8725479f0e32bd41b0dd2313eb?from=badge" title="Find me on HighLevel Directory" target="_blank" rel="noopener noreferrer" className="absolute top-[30%] -left-4 md:-left-14 z-30 transition-transform duration-500 hover:-translate-y-2 hover:scale-105">
+                   <img src="https://directory.gohighlevel.com/images/BD_Certified_Admin_Main_Badge.png" alt="HighLevel Certified Admin Badge" className="w-20 md:w-28" style={{ border: 'none' }} />
                  </a>
 
                  {/* Floating Badges */}
