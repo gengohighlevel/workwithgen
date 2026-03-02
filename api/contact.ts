@@ -149,6 +149,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       success: true,
       contactId,
       email,
+      debug: {
+        receivedFields: Object.keys(body),
+        parsedValues: {
+          fullName, email, phone, businessName, leadSource,
+          services, ghlStatus, projectType, timeline, description
+        },
+        customFieldCount: customFields.length,
+      },
     });
   } catch (err) {
     console.error('GHL contact proxy error:', err);
