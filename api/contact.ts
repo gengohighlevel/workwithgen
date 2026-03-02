@@ -132,7 +132,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         locationId,
         companyName: businessName || undefined,
         source: leadSource || 'Website Form',
-        tags: ['website-inquiry'],
+        tags: ['website-inquiry', 'portfolio-website'],
         customFields,
       }),
     });
