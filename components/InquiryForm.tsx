@@ -107,9 +107,68 @@ const InquiryForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    navigate('/booking', { state: formData });
+
+    let contactId = '';
+
+    try {
+      const GHL_API_KEY = process.env.GHL_API_KEY || '';
+      const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || '';
+      const nameParts = formData.fullName.trim().split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      const contactPayload: Record<string, any> = {
+        email: formData.email,
+        phone: formData.phone,
+        firstName,
+        lastName,
+        name: formData.fullName,
+        source: formData.leadSource || 'Website Form',
+        locationId: GHL_LOCATION_ID,
+        tags: [
+          'website-inquiry',
+          ...(formData.services || []),
+          ...(formData.ghlStatus ? [`ghl-${formData.ghlStatus.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`] : []),
+          ...(formData.projectType ? [`project-${formData.projectType.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`] : []),
+        ],
+      };
+
+      if (formData.businessName) {
+        contactPayload.companyName = formData.businessName;
+      }
+
+      if (GHL_API_KEY) {
+        const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GHL_API_KEY}`,
+            'Content-Type': 'application/json',
+            'Version': '2021-07-28'
+          },
+          body: JSON.stringify(contactPayload)
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          // Handle duplicate contact — GHL returns the existing contactId
+          if (data?.meta?.contactId) {
+            contactId = data.meta.contactId;
+            console.log('Existing contact found in GHL:', contactId);
+          } else {
+            console.warn('Contact creation returned non-OK status:', response.status);
+          }
+        } else {
+          contactId = data?.contact?.id || '';
+          console.log('Contact created in GHL:', contactId);
+        }
+      } else {
+        console.warn('GHL_API_KEY not configured. Contact was not created.');
+      }
+    } catch (err) {
+      console.error('Error creating contact in GHL:', err);
+    }
+
+    navigate('/booking', { state: { ...formData, contactId } });
   };
 
   const servicesList = [
