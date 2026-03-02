@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import useSEO from '../hooks/useSEO';
 import { CheckCircle2, Mail, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, Loader2, AlertCircle, Video } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-
-interface SlotData {
-  date: string;
-  slots: string[];
-}
 
 interface CalendarSlots {
   [date: string]: string[];
@@ -25,16 +20,17 @@ const BookingPage: React.FC = () => {
   });
 
   const { state } = useLocation();
+  const [searchParams] = useSearchParams();
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const { theme } = useTheme();
 
-  // Booking details from previous step or manual entry
+  // Booking details: React Router state (internal form) → URL params (external/embedded form) → manual entry
   const [userDetails, setUserDetails] = useState({
-    fullName: state?.fullName || '',
-    email: state?.email || '',
-    phone: state?.phone || '',
+    fullName: state?.fullName || searchParams.get('name') || searchParams.get('fullName') || '',
+    email: state?.email || searchParams.get('email') || '',
+    phone: state?.phone || searchParams.get('phone') || '',
   });
-  const contactId = state?.contactId || '';
+  const contactId = state?.contactId || searchParams.get('contactId') || '';
 
   // Calendar State
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -55,6 +51,20 @@ const BookingPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     fetchSlots(currentDate);
   }, [currentDate]);
+
+  // Confetti celebration on booking confirmation
+  useEffect(() => {
+    if (!bookingConfirmed) return;
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+    script.onload = () => {
+      const confetti = (window as any).confetti;
+      if (!confetti) return;
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#8b5cf6', '#22c55e', '#f59e0b', '#6366f1'] });
+      setTimeout(() => confetti({ particleCount: 50, spread: 90, origin: { y: 0.5 }, colors: ['#8b5cf6', '#22c55e', '#f59e0b', '#a78bfa'] }), 300);
+    };
+    document.head.appendChild(script);
+  }, [bookingConfirmed]);
 
   const fetchSlots = async (date: Date) => {
     setLoading(true);
@@ -237,15 +247,34 @@ const BookingPage: React.FC = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-8 text-[#1d1d1f] dark:text-white">Appointment Booked</h1>
-          
+
           <div className="space-y-4 mb-12 max-w-xl mx-auto">
             <p className="text-xl text-[#1d1d1f] dark:text-white font-semibold leading-relaxed">
-              Your appointment has been successfully scheduled and confirmed in our system.
+              {userDetails.fullName ? `Thanks, ${userDetails.fullName.split(' ')[0]}!` : 'Thanks!'} Your appointment has been confirmed.
             </p>
             <p className="text-lg text-[#424245] dark:text-gray-400 font-medium leading-relaxed">
-              We’ve received your details and are looking forward to speaking with you about your GoHighLevel optimization.
+              We're looking forward to speaking with you about your GoHighLevel optimization.
             </p>
           </div>
+
+          {/* Booking Details Card */}
+          {selectedSlot && (
+            <div className="glass-card p-6 md:p-8 rounded-[2rem] border border-purple-100 dark:border-purple-900/30 mb-8 bg-purple-50/50 dark:bg-purple-900/10 max-w-xl mx-auto">
+              <div className="flex items-center gap-4 justify-center">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/40 rounded-2xl flex items-center justify-center shrink-0">
+                  <CalendarIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div className="text-left">
+                  <p className="text-lg font-bold text-[#1d1d1f] dark:text-white">
+                    {new Date(selectedSlot).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                  <p className="text-base font-semibold text-purple-600 dark:text-purple-400">
+                    {new Date(selectedSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ({userTimezone.replace(/_/g, ' ')})
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="glass-card p-8 md:p-10 rounded-[2.5rem] border border-gray-100 dark:border-zinc-800 mb-12 text-left bg-white/50 dark:bg-zinc-900/50">
             <div className="grid gap-8">
@@ -256,29 +285,29 @@ const BookingPage: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-xl mb-2 text-[#1d1d1f] dark:text-white">Check Your Inbox</h3>
                   <p className="text-[#424245] dark:text-gray-400 text-base leading-relaxed">
-                    A confirmation email with your appointment details has been sent to your email address. Please review it carefully and keep it for reference.
+                    A confirmation email has been sent{userDetails.email ? ` to ${userDetails.email}` : ''}. Please review it carefully and keep it for reference.
                   </p>
                 </div>
               </div>
-              
+
               <div className="w-full h-px bg-gray-100 dark:bg-white/5" />
 
               <div className="flex items-start gap-5">
                 <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center shrink-0">
-                  <CalendarIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                  <Video className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
                   <h3 className="font-bold text-xl mb-2 text-[#1d1d1f] dark:text-white">Discovery Call</h3>
                   <p className="text-[#424245] dark:text-gray-400 text-base leading-relaxed">
-                    Your discovery call is officially booked. The confirmation email includes the meeting link, date, and time for your session.
+                    Your discovery call is officially booked. The confirmation email includes the meeting link for your session.
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5 text-center">
               <p className="text-sm font-medium text-[#424245] dark:text-gray-500 bg-gray-50 dark:bg-zinc-800/50 py-2 px-4 rounded-full inline-block">
-                If you don’t see the email within a few minutes, please check your spam or promotions folder.
+                If you don't see the email within a few minutes, please check your spam or promotions folder.
               </p>
             </div>
           </div>
