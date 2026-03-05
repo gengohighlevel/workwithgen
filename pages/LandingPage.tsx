@@ -568,6 +568,51 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Certifications & Badges Section */}
+        <section className="py-24 bg-transparent transition-colors">
+          <div className="max-w-7xl mx-auto px-6">
+            <Reveal animation="animate-reveal-up" className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 dark:text-white">Certifications & Badges</h2>
+              <p className="text-[#424245] dark:text-gray-400 max-w-2xl mx-auto text-lg">
+                Verified credentials across GoHighLevel's core disciplines.
+              </p>
+            </Reveal>
+
+            <Reveal animation="animate-reveal-up" delay="animation-delay-200">
+              <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8">
+                {[
+                  { name: "Certified Admin", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c665b72ce88779519.png" },
+                  { name: "A2P 10DLC Compliance", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5ccc83076df9157c84.png" },
+                  { name: "AI Voice", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c618c8d777afe9ff4.png" },
+                  { name: "AI Tech Stack", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5ccc83076c01157c83.png" },
+                  { name: "Course Creator", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c618c8d096cfe9fec.png" },
+                  { name: "Funnel Builder", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c8ca91a9660289bc1.png" },
+                  { name: "WhatsApp Integration", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c36702f0655eda8d0.png" },
+                  { name: "Quick Wins", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c36702f82a4eda8d1.png" },
+                  { name: "Local Hero (SaaS)", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5cde2e7d66ef677cf4.png" },
+                  { name: "Automated Swag Store", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5c8ca91a668a289bbc.png" },
+                  { name: "Social Media Manager", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5ccc8307ae86157c82.png" },
+                  { name: "Paid Ads", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5cbffadfc8caaffcee.png" },
+                  { name: "HIPAA Compliance", src: "https://assets.cdn.filesafe.space/P7WTdwLMsDsnEHkSqqXD/media/69a9be5cde2e7d5748677cf0.png" },
+                ].map((badge, idx) => (
+                  <div key={idx} className="group flex flex-col items-center gap-3">
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-110 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                      <img
+                        src={badge.src}
+                        alt={`${badge.name} Badge`}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-[10px] md:text-xs font-bold text-[#86868b] dark:text-gray-400 uppercase tracking-wider text-center max-w-[120px] group-hover:text-[#a855f7] transition-colors duration-300">
+                      {badge.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* 2. Scale with Real Data Section */}
         <section id="efficiency" className="py-24 bg-transparent transition-colors">
           <div className="max-w-7xl mx-auto px-6">
