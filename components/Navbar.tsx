@@ -26,6 +26,7 @@ const Navbar: React.FC = () => {
         {/* Center: Navigation Links - Absolutely positioned to ensure perfect centering */}
         {!isSpecialPage && (
           <div className="hidden md:flex items-center space-x-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[13px] font-medium text-[#1d1d1f]/80 dark:text-gray-300">
+            <Link to="/#badges" className="hover:text-black dark:hover:text-white transition-colors">Badges</Link>
             <Link to="/#efficiency" className="hover:text-black dark:hover:text-white transition-colors">Efficiency</Link>
             <Link to="/#services" className="hover:text-black dark:hover:text-white transition-colors">Services</Link>
             <Link to="/#projects" className="hover:text-black dark:hover:text-white transition-colors">Projects</Link>

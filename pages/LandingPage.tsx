@@ -512,7 +512,7 @@ const LandingPage: React.FC = () => {
                         key={index} 
                         src={url} 
                         alt={`Partner Logo ${index + 1}`} 
-                        className="h-10 md:h-14 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 dark:hover:grayscale-0 dark:hover:opacity-100 dark:invert dark:opacity-60 dark:hover:invert-0 hover:scale-110 transition-all duration-500 cursor-pointer p-2 rounded-xl dark:hover:bg-white/10"
+                        className="h-10 md:h-14 w-auto object-contain opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-500 cursor-pointer p-2 rounded-xl dark:hover:bg-white/10"
                       />
                     ))}
                   </div>
@@ -569,7 +569,7 @@ const LandingPage: React.FC = () => {
         </section>
 
         {/* Certifications & Badges Section */}
-        <section className="py-24 bg-transparent transition-colors">
+        <section id="badges" className="py-24 bg-transparent transition-colors">
           <div className="max-w-7xl mx-auto px-6">
             <Reveal animation="animate-reveal-up" className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 dark:text-white">Certifications & Badges</h2>
